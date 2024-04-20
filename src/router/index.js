@@ -92,6 +92,11 @@ const routes = [
                 name: "chatWindow",
                 component: () => import("../views/chatWindow/index.vue"),
             },
+            {
+                path: "userInfo",
+                name: "userInfo",
+                component: () => import("../views/userInfo/index.vue"),
+            },
         ],
     },
 ];
