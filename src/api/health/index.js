@@ -177,3 +177,75 @@ export function getArticlesType() {
     });
 }
 // -----------------------------------------
+// 运动管理---------------------------------
+// 分页查询运动
+export function getSportsInfo(data) {
+    return request({
+        method: "get",
+        url: "/admin/sport/detail/pageQuery",
+        headers: {
+            token: token,
+        },
+        params: {
+            name: data.name,
+            type: data.type,
+            pass: data.pass,
+            page: data.page,
+            pageSize: data.pageSize,
+        },
+    });
+}
+// 新增运动
+export function addSportsInfo(data) {
+    return request({
+        method: "post",
+        url: "/sport/detail/save",
+        headers: {
+            token: token,
+        },
+        data: {
+            name: data.name,
+            type: data.type,
+            picture: data.picture,
+            consumption: data.consumption,
+        },
+    });
+}
+// 修改运动信息
+export function updateSportsInfo(data) {
+    return request({
+        method: "put",
+        url: "/sport/detail/update",
+        headers: {
+            token: token,
+        },
+        data: {
+            id: data.id,
+            name: data.name,
+            type: data.type,
+            picture: data.picture,
+            consumption: data.consumption,
+        },
+    });
+}
+// 删除运动
+export function deleteSportsInfo(data) {
+    return request({
+        method: "delete",
+        url: `/sport/detail/delete/${data}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 获取所有运动类型
+export function getSportsType() {
+    return request({
+        method: "get",
+        url: "/list/sport/detail/type",
+        headers: {
+            token: token,
+        },
+    });
+}
+// -----------------------------------------
