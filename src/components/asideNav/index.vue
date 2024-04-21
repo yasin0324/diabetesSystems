@@ -19,7 +19,7 @@
                 </template>
                 <el-menu-item index="/home/health/food">
                     <el-icon><Food /></el-icon>
-                    <span>食品管理</span>
+                    <span>食物管理</span>
                 </el-menu-item>
                 <el-menu-item index="/home/health/articles"
                     ><el-icon><Document /></el-icon
@@ -42,10 +42,6 @@
                 <el-menu-item index="/home/data/diet"
                     ><el-icon><Food /></el-icon
                     ><span>饮食分析</span></el-menu-item
-                >
-                <el-menu-item index="/home/data/medicine"
-                    ><el-icon><FirstAidKit /></el-icon
-                    ><span>用药分析</span></el-menu-item
                 >
                 <el-menu-item index="/home/data/sportsdata"
                     ><el-icon><Basketball /></el-icon

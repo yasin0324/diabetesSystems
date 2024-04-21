@@ -64,12 +64,6 @@ const routes = [
                             import("../views/dataAnalysis/diet/index.vue"),
                     },
                     {
-                        path: "medicine",
-                        name: "medicine",
-                        component: () =>
-                            import("../views/dataAnalysis/medicine/index.vue"),
-                    },
-                    {
                         path: "sportsdata",
                         name: "sportsdata",
                         component: () =>
