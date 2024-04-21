@@ -16,7 +16,12 @@
             <el-button class="addFood" @click="openAddFood">新增食物</el-button>
         </div>
         <div class="mainContent">
-            <el-table :data="tableData" stripe @filter-change="filterHandler">
+            <el-table
+                :data="tableData"
+                stripe
+                @filter-change="filterHandler"
+                height="545"
+            >
                 <el-table-column
                     label="分类"
                     prop="type"
@@ -197,7 +202,20 @@
                             font-weight: bold;
                         "
                         @click="submitAddForm"
+                        v-if="submitType === 'add'"
                         >添 加 食 物</el-button
+                    >
+                    <el-button
+                        style="
+                            margin: 0 auto;
+                            width: 80%;
+                            background-color: #f0f2fd;
+                            color: #70708c;
+                            font-weight: bold;
+                        "
+                        @click="submitAddForm"
+                        v-if="submitType === 'edit'"
+                        >编 辑 食 物</el-button
                     >
                 </el-form-item>
             </el-form>
@@ -257,6 +275,7 @@ const handleCurrentPage = () => {
         .catch((err) => {
             console.log(err);
         });
+    getAllFoodType();
 };
 // 搜索食物
 const searchFood = () => {
@@ -286,6 +305,7 @@ const openAddFood = () => {
         carbohydrate: "",
     };
     imgUrl.value = "";
+    foodFileLists.value = [];
     submitType.value = "add";
     dialogVisible.value = true;
 };
@@ -314,7 +334,6 @@ const handleSuccess = (file) => {
 // 提交食物表单
 const submitAddForm = () => {
     foodForm.value.validate((valid) => {
-        console.log(valid);
         if (valid) {
             if (submitType.value === "add") {
                 addNewFood();
@@ -343,7 +362,7 @@ const addNewFood = () => {
     };
     addFoodInfo(data)
         .then((res) => {
-            console.log(res);
+            handleCurrentPage();
         })
         .catch((err) => {
             console.log(err);
@@ -411,7 +430,6 @@ const getAllFoodType = () => {
 const filterHandler = (value) => {
     tableData.value = [];
     datalength.value = 0;
-    console.log(value);
     let types = value["type"];
     if (types.length === 0) {
         handleCurrentPage();
@@ -424,10 +442,8 @@ const filterHandler = (value) => {
         };
         getFoodInfo(data)
             .then((res) => {
-                console.log(res);
                 tableData.value = res.data.foodDetails;
                 datalength.value = res.data.total;
-                console.log(tableData.value);
             })
             .catch((err) => {
                 console.log(err);
@@ -438,7 +454,6 @@ const filterHandler = (value) => {
 // 获取所有食物数据
 onMounted(() => {
     handleCurrentPage();
-    getAllFoodType();
 });
 </script>
 

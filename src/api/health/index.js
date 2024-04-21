@@ -89,7 +89,7 @@ export function deleteFoodInfo(data) {
         },
     });
 }
-// 获取所有食物类型
+// 获取食物所有类型
 export function getFoodType() {
     return request({
         method: "get",
@@ -161,6 +161,16 @@ export function deleteArticlesInfo(data) {
     return request({
         method: "delete",
         url: `/admin/article/delete/${data}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 获取文章所有类型
+export function getArticlesType() {
+    return request({
+        method: "get",
+        url: "/article/list/allType",
         headers: {
             token: token,
         },

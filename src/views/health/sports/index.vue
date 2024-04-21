@@ -1,5 +1,5 @@
 <template>
-    <div>sports</div>
+    <div class="main"></div>
 </template>
 
 <script setup></script>
