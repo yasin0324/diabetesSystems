@@ -63,6 +63,7 @@ import { ref } from "vue";
 import { loginUserName } from "../../api/login/index";
 import { setToken } from "../../util/auth";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
 
@@ -101,7 +102,10 @@ const loginByUserName = () => {
     loginUserName(loginForm.value)
         .then((res) => {
             setToken(res.data.token);
-            router.push("/home");
+            ElMessage.success("登录成功");
+            setTimeout(() => {
+                router.push("/home");
+            }, 800);
         })
         .catch((err) => {
             console.log(err);
