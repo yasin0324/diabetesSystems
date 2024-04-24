@@ -39,4 +39,8 @@
         }
     }
 }
+:deep(.el-main) {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 </style>

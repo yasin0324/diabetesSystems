@@ -38,11 +38,23 @@
                 </div>
                 <div class="footerButton">
                     <div class="diss">
-                        <el-button round>禁用账号</el-button>
+                        <el-button
+                            v-if="item.status === 1"
+                            round
+                            @click="setDisabled(item)"
+                            >禁 用 账 号</el-button
+                        >
+                        <el-button
+                            v-if="item.status === 0"
+                            round
+                            class="disabled"
+                            @click="setRestart(item)"
+                            >启 用 账 号</el-button
+                        >
                     </div>
                     <div class="moreInfo">
                         <el-button round @click="checkInfo(item.userId)"
-                            >查看详细</el-button
+                            >查 看 详 细</el-button
                         >
                     </div>
                 </div>
@@ -119,6 +131,7 @@ import {
     restart,
     getOneUser,
 } from "../../api/userData/index";
+import { ElMessage } from "element-plus";
 
 const page = ref(1);
 const pageSize = ref(10);
@@ -155,6 +168,28 @@ const checkInfo = (id) => {
     userInfo.value = {};
     getUserInfo(id);
     dialogVisible.value = true;
+};
+// 禁用用户账号
+const setDisabled = (user) => {
+    disableAccount(user.userId)
+        .then((res) => {
+            ElMessage.success(res.msg);
+            handleCurrentPage();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+// 启用用户账号
+const setRestart = (user) => {
+    restart(user.userId)
+        .then((res) => {
+            ElMessage.success(res.msg);
+            handleCurrentPage();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 // 获取所有数据
@@ -243,6 +278,9 @@ onMounted(() => {
                     position: absolute;
                     left: 1vh;
                     bottom: 1vh;
+                    .disabled {
+                        background-color: grey;
+                    }
                 }
                 .moreInfo {
                     position: absolute;
