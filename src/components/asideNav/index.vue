@@ -55,6 +55,9 @@
             <el-menu-item index="/home/notice">
                 <el-icon><WarnTriangleFilled /></el-icon><span>公告管理</span>
             </el-menu-item>
+            <el-menu-item index="/home/feed_back">
+                <el-icon><CopyDocument /></el-icon><span>反馈管理</span>
+            </el-menu-item>
             <el-menu-item index="/home/chatWindow"
                 ><el-icon><Comment /></el-icon
                 ><span>在线客服</span></el-menu-item

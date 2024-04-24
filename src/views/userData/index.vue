@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="mainContent">
-            <div class="userCard" v-for="item in userLists">
+            <div class="userCard" v-for="(item,index) in userLists" :key="index">
                 <div class="userNickName">{{ item.nickName }}</div>
                 <div class="userInfo1">
                     <div class="userAvatar">

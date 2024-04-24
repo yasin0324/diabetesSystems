@@ -39,6 +39,9 @@
                     :loading="loading"
                     size="large"
                     type="primary"
+                    color="#736ffe" 
+                    round 
+                    plain
                     style="width: 100%"
                     @click.prevent="submitForm"
                 >
@@ -101,6 +104,7 @@ const finishCheck = () => {
 const loginByUserName = () => {
     loginUserName(loginForm.value)
         .then((res) => {
+            console.log(res.data)
             setToken(res.data.token);
             ElMessage.success("登录成功");
             setTimeout(() => {

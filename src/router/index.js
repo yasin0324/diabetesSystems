@@ -82,6 +82,11 @@ const routes = [
                 component: () => import("../views/notice/index.vue"),
             },
             {
+                path: "feed_back",
+                name: "feed_back",
+                component: () => import("../views/feed_back/index.vue"),
+            },
+            {
                 path: "chatWindow",
                 name: "chatWindow",
                 component: () => import("../views/chatWindow/index.vue"),
@@ -91,6 +96,16 @@ const routes = [
                 name: "userInfo",
                 component: () => import("../views/userInfo/index.vue"),
             },
+            {
+                path: "editpassMobile",
+                name: "editpassMobile",
+                component: () => import("../views/userInfo/editpassMobile.vue")
+            },
+            {
+                path: "register",
+                name: "register",
+                component: () => import("../views/register/register.vue")
+            }
         ],
     },
 ];

@@ -19,6 +19,9 @@
                             <el-dropdown-item @click="toUser"
                                 >个人中心</el-dropdown-item
                             >
+                            <el-dropdown-item @click="toregister"
+                                >管理员注册</el-dropdown-item
+                            >
                             <el-dropdown-item @click="toLogout"
                                 >退出登录</el-dropdown-item
                             >
@@ -43,10 +46,10 @@ const getUserInfo = () => {
     getInfo()
         .then((res) => {
             userInfo.value = res.data;
-            if (res.code === 401) {
-                localStorage.removeItem("token");
-                router.push("/login");
-            }
+            // if (res.code === 401) {
+            //     localStorage.removeItem("token");
+            //     router.push("/login");
+            // }
         })
         .catch((err) => {
             console.log(err);
@@ -67,6 +70,10 @@ const toLogout = () => {
 const toUser = () => {
     router.push("/home/userInfo");
 };
+// 跳转到管理员注册
+const toregister = () =>{
+    router.push("/home/register")
+}
 
 onMounted(() => {
     getUserInfo();
