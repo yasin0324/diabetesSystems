@@ -170,7 +170,6 @@ const registerRules = ref({
 // 获取验证码倒计时
 const countdown = ref(60);
 const isCountingDown = ref(false);
-
 // 获取手机验证码
 function getSmsCode() {
     if(registerForm.value.mobile === ''){

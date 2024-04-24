@@ -32,7 +32,7 @@
                 width: 30vh;
             }
             .el-main {
-                height: 85vh;
+                // height: 85vh;
                 background-color: #fff;
                 border-radius: 5vh;
             }

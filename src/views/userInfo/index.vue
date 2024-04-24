@@ -824,9 +824,7 @@ function getSmsCode() {
     flex-direction: column; /* 垂直排列 */
     justify-content: center; 
     align-items: center; 
-    background-repeat: repeat;
-    background-size: cover;
-    min-height: 90vh;
+    height: auto;
     .head{
         width: 100%;
         margin-bottom:2vh;

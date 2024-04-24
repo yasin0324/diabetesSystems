@@ -29,12 +29,12 @@
             </span>
             
         </div>
-        <el-table :data="noticeValue" style="width: 100%">
-            <el-table-column label="发布管理员id" width="120" prop="adminId"/>
+        <el-table :data="noticeValue" style="width: 100%" >
+            <el-table-column label="发布管理员id" fixed  width="120" prop="adminId"/>
             <el-table-column label="公告id" width="100" prop="id"/>
             <el-table-column label="标题" width="200" prop="title"/>
             <el-table-column label="发布时间" width="200" prop="createTime" />
-            <el-table-column fixed="right" label="操作">
+            <el-table-column :fixed="right" label="操作">
             <template #default="scope">
                 <el-button  type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
                     查看详细信息

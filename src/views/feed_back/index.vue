@@ -1,20 +1,20 @@
 <template>
     <div class="main">
-        <el-table :data="feed_backValue" style="width: 100%">
-            <el-table-column label="反馈用户id" width="100" prop="userId"/>
-            <el-table-column label="反馈类型" width="200" prop="type"/>
-            <el-table-column label="手机号" width="200" prop="mobile"/>
-            <el-table-column label="反馈时间" width="200" prop="createTime" />
+        <el-table :data="feed_backValue" class="table" :fit="true">
+            <el-table-column label="反馈用户id" prop="userId"/>
+            <el-table-column label="反馈类型" prop="type"/>
+            <el-table-column label="手机号" prop="mobile"/>
+            <el-table-column label="反馈时间" prop="createTime" />
             <el-table-column fixed="right" label="操作">
-            <template #default="scope">
-                <el-button  type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
-                    查看详细信息
-                </el-button>
-            </template>
+                <template #default="scope">
+                    <el-button type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
+                        查看详细信息
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
         <el-pagination
-        style="margin-top:1.5vh"
+        class="fenye"
         background
         layout="prev, pager, next"
         :total="total"
@@ -151,12 +151,24 @@ function handleLook(index,data){
 <style lang="less" scoped>
 .main{
     width: 100%;
+    height: 85vh;
     box-sizing: border-box;
     text-align: center;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
+    .table{
+        width: 100%; 
+        height: 80vh;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .fenye{
+        // height: 10vh;
+        position: fixed;
+        bottom: 3vh;
+    }
     :deep(.el-pagination){
         li.is-active {
             background-color: #736ffe;

@@ -26,7 +26,7 @@ export function smsCodeGet(data) {
         method: "get",
         url: "/common/code/mobile",
         params: {
-            mobile: data.mobile,
+            mobile: data,
         },
     });
 }
