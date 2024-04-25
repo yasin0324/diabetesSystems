@@ -15,7 +15,7 @@ export function registerUser(data) {
             password: data.password,
             name: data.name,
             gender: data.gender,
-            roleName: "普通用户",
+            roleName: "管理员",
         },
     });
 }
