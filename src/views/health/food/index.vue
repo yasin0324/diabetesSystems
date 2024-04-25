@@ -30,7 +30,7 @@
                     :filter-multiple="false"
                     column-key="type"
                 ></el-table-column>
-                <el-table-column fixed="left">
+                <el-table-column fixed="left" label="图片">
                     <template #default="scope">
                         <img
                             :src="scope.row.picture"
@@ -39,7 +39,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="食物"
+                    label="名称"
                     prop="name"
                     width="120"
                     fixed="left"
@@ -188,6 +188,7 @@
                         :file-list="foodFileLists"
                         :on-success="(file) => handleSuccess(file)"
                         :headers="headers"
+                        :on-preview="handlePictureCardPreview"
                     >
                         <el-icon class="food-uploader-icon"><Plus /></el-icon>
                     </el-upload>
@@ -221,6 +222,12 @@
             </el-form>
         </el-dialog>
     </div>
+    <el-dialog
+        style="display: flex; justify-content: center"
+        v-model="pictureDialogVisible"
+    >
+        <img :src="dialogImageUrl" alt="" />
+    </el-dialog>
 </template>
 
 <script setup>
@@ -449,6 +456,12 @@ const filterHandler = (value) => {
                 console.log(err);
             });
     });
+};
+const pictureDialogVisible = ref(false);
+const dialogImageUrl = ref("");
+const handlePictureCardPreview = async (file) => {
+    dialogImageUrl.value = file.url;
+    pictureDialogVisible.value = true;
 };
 
 // 获取所有食物数据
