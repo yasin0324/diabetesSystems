@@ -49,7 +49,7 @@
                     width="200"
                     prop="createTime"
                 />
-                <el-table-column :fixed="right" label="操作">
+                <el-table-column fixed="right" label="操作">
                     <template #default="scope">
                         <el-button
                             type="success"
