@@ -1,7 +1,13 @@
 <template>
     <div>
         <div class="button">
-            <el-button  type="success" color="#736ffe" round plain @click="dialognotice = true">
+            <el-button
+                type="success"
+                color="#736ffe"
+                round
+                plain
+                @click="dialognotice = true"
+            >
                 发布公告
             </el-button>
             <el-button
@@ -18,32 +24,52 @@
                     class="searchInput"
                     v-model.number="searchnoticeID"
                 ></el-input>
-                <el-button  
-                color="#736ffe"
-                class="searchButton"
-                round 
-                plain
-                @click="searchnotice"
+                <el-button
+                    color="#736ffe"
+                    class="searchButton"
+                    round
+                    plain
+                    @click="searchnotice"
                     >搜索</el-button
                 >
             </span>
-            
         </div>
         <div class="Banner">
-            <el-table :data="noticeValue" height="545" style="width: 100%" >
-                <el-table-column label="发布管理员id" fixed  width="120" prop="adminId"/>
-                <el-table-column label="公告id" width="100" prop="id"/>
-                <el-table-column label="标题" width="200" prop="title"/>
-                <el-table-column label="发布时间" width="200" prop="createTime" />
+            <el-table :data="noticeValue" height="577" style="width: 100%">
+                <el-table-column
+                    label="发布管理员id"
+                    fixed
+                    width="120"
+                    prop="adminId"
+                />
+                <el-table-column label="公告id" width="100" prop="id" />
+                <el-table-column label="标题" width="200" prop="title" />
+                <el-table-column
+                    label="发布时间"
+                    width="200"
+                    prop="createTime"
+                />
                 <el-table-column :fixed="right" label="操作">
-                <template #default="scope">
-                    <el-button  type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
-                        查看详细信息
-                    </el-button>
-                    <el-button  type="success" color="#736ffe" round plain @click="handledel(scope.$index, scope.row)">
-                        删除公告
-                    </el-button>
-                </template>
+                    <template #default="scope">
+                        <el-button
+                            type="success"
+                            color="#736ffe"
+                            round
+                            plain
+                            @click="handleLook(scope.$index, scope.row)"
+                        >
+                            查看详细信息
+                        </el-button>
+                        <el-button
+                            type="success"
+                            color="#736ffe"
+                            round
+                            plain
+                            @click="handledel(scope.$index, scope.row)"
+                        >
+                            删除公告
+                        </el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -57,7 +83,7 @@
                 @current-change="handliesearchPage"
             />
         </div>
-        
+
         <!-- 查看详细信息 -->
         <el-dialog v-model="dialogAllFeedValue" width="1000">
             <el-descriptions
@@ -67,59 +93,59 @@
                 border
             >
                 <el-descriptions-item>
-                <template #label>
-                    <div class="cell-item">
-                    <el-icon>
-                        <user />
-                    </el-icon>
-                    发布管理员id
-                    </div>
-                </template>
-                {{ dialogData.adminId}}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                <template #label>
-                    <div class="cell-item">
-                    <el-icon >
-                        <iphone />
-                    </el-icon>
-                    公告id
-                    </div>
-                </template>
-                {{ dialogData.id }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                <template #label>
-                    <div class="cell-item">
-                    <el-icon >
-                        <Timer />
-                    </el-icon>
-                    反馈时间
-                    </div>
-                </template>
-                {{ dialogData.createTime }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                <template #label>
-                    <div class="cell-item">
-                    <el-icon>
-                        <tickets />
-                    </el-icon>
-                    标题
-                    </div>
-                </template>
-                <el-tag size="small">{{ dialogData.title }}</el-tag>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <user />
+                            </el-icon>
+                            发布管理员id
+                        </div>
+                    </template>
+                    {{ dialogData.adminId }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                     <template #label>
                         <div class="cell-item">
-                        <el-icon >
-                            <office-building />
-                        </el-icon>
-                        公告内容
+                            <el-icon>
+                                <iphone />
+                            </el-icon>
+                            公告id
                         </div>
                     </template>
-                    {{dialogData.word}}
+                    {{ dialogData.id }}
+                </el-descriptions-item>
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <Timer />
+                            </el-icon>
+                            反馈时间
+                        </div>
+                    </template>
+                    {{ dialogData.createTime }}
+                </el-descriptions-item>
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <tickets />
+                            </el-icon>
+                            标题
+                        </div>
+                    </template>
+                    <el-tag size="small">{{ dialogData.title }}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <office-building />
+                            </el-icon>
+                            公告内容
+                        </div>
+                    </template>
+                    {{ dialogData.word }}
                 </el-descriptions-item>
             </el-descriptions>
         </el-dialog>
@@ -136,19 +162,27 @@
                 class="demo-ruleForm"
             >
                 <el-form-item label="标题" prop="title">
-                <el-input v-model="SavenoticeWord.title" autocomplete="off" />
+                    <el-input
+                        v-model="SavenoticeWord.title"
+                        autocomplete="off"
+                    />
                 </el-form-item>
                 <el-form-item label="内容" prop="word">
-                <el-input
-                    v-model="SavenoticeWord.word"
-                    autocomplete="off"
-                    type="textarea"
-                />
+                    <el-input
+                        v-model="SavenoticeWord.word"
+                        autocomplete="off"
+                        type="textarea"
+                    />
                 </el-form-item>
             </el-form>
-            <div class="dialog-footer" style="margin-left:70%">
+            <div class="dialog-footer" style="margin-left: 70%">
                 <el-button @click="resetForm()">取消</el-button>
-                <el-button type="success" color="#736ffe" plain @click="submitnoticeForm">
+                <el-button
+                    type="success"
+                    color="#736ffe"
+                    plain
+                    @click="submitnoticeForm"
+                >
                     确定
                 </el-button>
             </div>
@@ -157,38 +191,43 @@
 </template>
 
 <script setup>
-import { Savenotice,Listnotice,ListnoticeID,delnotice} from "../../api/notice/index"
-import { ref,onMounted } from "vue";
-import { ElMessage } from 'element-plus'
+import {
+    Savenotice,
+    Listnotice,
+    ListnoticeID,
+    delnotice,
+} from "../../api/notice/index";
+import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 
-onMounted(() =>{
-    ListnoticeValue()
-})
+onMounted(() => {
+    ListnoticeValue();
+});
 
 // 查看详细信息
-const dialogAllFeedValue = ref(false)
-let dialogData = ref('')
-function handleLook(index,data){
-    dialogAllFeedValue.value = true
+const dialogAllFeedValue = ref(false);
+let dialogData = ref("");
+function handleLook(index, data) {
+    dialogAllFeedValue.value = true;
     dialogData.value = data;
 }
-function handledel(index,data){
+function handledel(index, data) {
     delnoticeValue(data.id);
 }
 
 // 发布公告
-const dialognotice = ref(false)
+const dialognotice = ref(false);
 const resetForm = () => {
     dialognotice.value = false;
-}
+};
 // 提交公告表单
-const noticeForm = ref(null)
+const noticeForm = ref(null);
 const submitnoticeForm = async () => {
     if (!noticeForm.value) return;
     await noticeForm.value.validate((valid) => {
         if (valid) {
             SavenoticeValue(SavenoticeWord.value);
-            dialognotice.value = false
+            dialognotice.value = false;
         } else {
             return false;
         }
@@ -196,28 +235,28 @@ const submitnoticeForm = async () => {
 };
 
 // 根据id查询公告
-const searchnoticeID = ref('')
-function searchnotice(){
+const searchnoticeID = ref("");
+function searchnotice() {
     ListnoticeID(searchnoticeID.value)
-    .then(res =>{
-        noticeValue.value = res.data
-    })
-    .catch(error =>{
-        console.log(error)
-    })
+        .then((res) => {
+            noticeValue.value = res.data;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 // 查询公告
-const noticeValue = ref([])
-function ListnoticeValue(){
+const noticeValue = ref([]);
+function ListnoticeValue() {
     Listnotice()
-    .then(res =>{
-        // console.log(res)
-        noticeValue.value = res.data
-    })
-    .then(error =>{
-        console.log(error)
-    })
+        .then((res) => {
+            // console.log(res)
+            noticeValue.value = res.data;
+        })
+        .then((error) => {
+            console.log(error);
+        });
 }
 // let page = ref(1);
 // let pageSize = ref(11);
@@ -249,50 +288,47 @@ function ListnoticeValue(){
 
 // 发布公告
 const SavenoticeWord = ref({
-    title:'',
-    word:''
-})
-function SavenoticeValue(data){
+    title: "",
+    word: "",
+});
+function SavenoticeValue(data) {
     Savenotice(data)
-    .then(res =>{
-        // console.log(res)
-        ElMessage({
-            message: '发布成功',
-            type: 'success',
+        .then((res) => {
+            // console.log(res)
+            ElMessage({
+                message: "发布成功",
+                type: "success",
+            });
+            ListnoticeValue();
         })
-        ListnoticeValue();
-    })
-    .then(error =>{
-        console.log(error)
-    })
+        .then((error) => {
+            console.log(error);
+        });
 }
 // 表单校验规则
 const noticerules = ref({
     title: [{ required: true, message: "请输入标题", trigger: "blur" }],
     word: [{ required: true, message: "请输入内容", trigger: "blur" }],
-})
-
+});
 
 // 删除公告
-function delnoticeValue(id){
+function delnoticeValue(id) {
     delnotice(id)
-    .then(res =>{
-        ElMessage({
-            message: '删除成功',
-            type: 'success',
+        .then((res) => {
+            ElMessage({
+                message: "删除成功",
+                type: "success",
+            });
+            ListnoticeValue();
         })
-        ListnoticeValue();
-    })
-    .then(error =>{
-        console.log(error)
-    })
+        .then((error) => {
+            console.log(error);
+        });
 }
-
-
 </script>
 
 <style lang="less" scoped>
-.button{
+.button {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -309,16 +345,14 @@ function delnoticeValue(id){
     }
 }
 
-.Banner{
+.Banner {
     width: 100%;
     height: 72vh;
-    overflow: hidden;
-    overflow: scroll;
 }
 
-.footer{
+.footer {
     width: 100%;
-    height:10%;
+    height: 10%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -341,8 +375,8 @@ function delnoticeValue(id){
     }
 }
 
-:deep(.el-dialog){
-    border-radius:2vw;
+:deep(.el-dialog) {
+    border-radius: 2vw;
     padding: 2%;
 }
 </style>

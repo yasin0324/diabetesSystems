@@ -1,7 +1,12 @@
 <template>
     <div class="main">
         <div class="Banner">
-            <el-table :data="feed_backValue" class="table" height="545" :fit="true">
+            <el-table
+                :data="feed_backValue"
+                class="table"
+                height="577"
+                :fit="true"
+            >
                 <el-table-column label="反馈用户id" prop="userId" />
                 <el-table-column label="反馈类型" prop="type" />
                 <el-table-column label="手机号" prop="mobile" />
@@ -31,8 +36,6 @@
                 @current-change="handliesearchPage"
             />
         </div>
-        
-        
 
         <!-- 查看详细信息 -->
         <el-dialog v-model="dialogAllFeedValue" width="1000">
@@ -167,21 +170,18 @@ function handleLook(index, data) {
     display: flex;
     align-items: center;
     flex-direction: column;
-    .Banner{
+    .Banner {
         width: 100%;
         height: 75vh;
-        overflow: hidden;
-        overflow: scroll;
-
     }
-    .footer{
+    .footer {
         width: 100%;
-        height:10%;
+        height: 10%;
         display: flex;
         align-items: center;
         flex-direction: column;
     }
-    
+
     :deep(.el-pagination) {
         li.is-active {
             background-color: #736ffe;

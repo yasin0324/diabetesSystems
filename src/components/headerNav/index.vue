@@ -74,7 +74,7 @@ const toregister = () => {
 onMounted(() => {
     setTimeout(() => {
         getUserInfo();
-    }, 500);
+    }, 1000);
 });
 </script>
 
