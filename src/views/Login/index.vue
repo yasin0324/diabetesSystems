@@ -39,8 +39,8 @@
                     :loading="loading"
                     size="large"
                     type="primary"
-                    color="#736ffe" 
-                    round 
+                    color="#736ffe"
+                    round
                     plain
                     style="width: 100%"
                     @click.prevent="submitForm"
@@ -104,12 +104,16 @@ const finishCheck = () => {
 const loginByUserName = () => {
     loginUserName(loginForm.value)
         .then((res) => {
-            console.log(res.data)
-            setToken(res.data.token);
-            ElMessage.success("登录成功");
-            setTimeout(() => {
-                router.push("/home");
-            }, 800);
+            console.log(res.data);
+            if (res.data.role === "管理员") {
+                setToken(res.data.token);
+                ElMessage.success("登录成功");
+                setTimeout(() => {
+                    router.push("/home");
+                }, 800);
+            } else {
+                ElMessage.error("权限不足，无法登录");
+            }
         })
         .catch((err) => {
             console.log(err);

@@ -46,10 +46,6 @@ const getUserInfo = () => {
     getInfo()
         .then((res) => {
             userInfo.value = res.data;
-            // if (res.code === 401) {
-            //     localStorage.removeItem("token");
-            //     router.push("/login");
-            // }
         })
         .catch((err) => {
             console.log(err);
