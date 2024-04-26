@@ -29,22 +29,35 @@
             </span>
             
         </div>
-        <el-table :data="noticeValue" style="width: 100%" >
-            <el-table-column label="发布管理员id" fixed  width="120" prop="adminId"/>
-            <el-table-column label="公告id" width="100" prop="id"/>
-            <el-table-column label="标题" width="200" prop="title"/>
-            <el-table-column label="发布时间" width="200" prop="createTime" />
-            <el-table-column :fixed="right" label="操作">
-            <template #default="scope">
-                <el-button  type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
-                    查看详细信息
-                </el-button>
-                <el-button  type="success" color="#736ffe" round plain @click="handledel(scope.$index, scope.row)">
-                    删除公告
-                </el-button>
-            </template>
-            </el-table-column>
-        </el-table>
+        <div class="Banner">
+            <el-table :data="noticeValue" height="545" style="width: 100%" >
+                <el-table-column label="发布管理员id" fixed  width="120" prop="adminId"/>
+                <el-table-column label="公告id" width="100" prop="id"/>
+                <el-table-column label="标题" width="200" prop="title"/>
+                <el-table-column label="发布时间" width="200" prop="createTime" />
+                <el-table-column :fixed="right" label="操作">
+                <template #default="scope">
+                    <el-button  type="success" color="#736ffe" round plain @click="handleLook(scope.$index, scope.row)">
+                        查看详细信息
+                    </el-button>
+                    <el-button  type="success" color="#736ffe" round plain @click="handledel(scope.$index, scope.row)">
+                        删除公告
+                    </el-button>
+                </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="footer">
+            <el-pagination
+                class="fenye"
+                background
+                layout="prev, pager, next"
+                :total="total"
+                :current-page="page"
+                @current-change="handliesearchPage"
+            />
+        </div>
+        
         <!-- 查看详细信息 -->
         <el-dialog v-model="dialogAllFeedValue" width="1000">
             <el-descriptions
@@ -206,6 +219,33 @@ function ListnoticeValue(){
         console.log(error)
     })
 }
+// let page = ref(1);
+// let pageSize = ref(11);
+// let total = ref(10);
+// // 分页查询
+// const handliesearchPage = (newPage) => {
+//     page.value = newPage;
+//     const data = {
+//         page: page.value,
+//         pageSize: pageSize.value,
+//     };
+//     SavenoticeValue(data);
+// };
+// function SavenoticeValue() {
+//     const data = {
+//         page: page.value,
+//         pageSize: pageSize.value,
+//     };
+//     Savenotice(data)
+//         .then((res) => {
+//             console.log(res);
+//             feed_backValue.value = res.data.feedBackVOList;
+//             total.value = res.data.total;
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//         });
+// }
 
 // 发布公告
 const SavenoticeWord = ref({
@@ -268,6 +308,33 @@ function delnoticeValue(id){
         right: 3vh;
     }
 }
+
+.Banner{
+    width: 100%;
+    height: 72vh;
+    overflow: hidden;
+    overflow: scroll;
+}
+
+.footer{
+    width: 100%;
+    height:10%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    :deep(.el-pagination) {
+        li.is-active {
+            background-color: #736ffe;
+            // background-color: #84d21e;
+            color: var(--el-color-white);
+        }
+        li:hover {
+            background-color: #736ffe;
+            color: var(--el-color-white);
+        }
+    }
+}
+
 :deep(.el-input) {
     .el-input__wrapper {
         border-radius: 2vh;
