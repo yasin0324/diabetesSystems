@@ -19,7 +19,7 @@ export function loginUserName(data) {
 export function logout() {
     return request({
         method: "post",
-        url: "/user/logout",
+        url: "/user/logout1",
         headers: {
             token: token,
         },

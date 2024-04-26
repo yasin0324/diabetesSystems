@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+onMounted(() => {
+    window.onload = function () {
+        if (!window.sessionStorage["token"]) {
+            window.localStorage.removeItem("token");
+        }
+    };
+    window.onunload = function () {
+        window.sessionStorage["token"] = true;
+    };
+    window.onbeforeunload = function () {
+        window.sessionStorage["token"] = true;
+    };
+});
+</script>
 
 <template>
     <router-view></router-view>
