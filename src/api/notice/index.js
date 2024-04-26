@@ -14,13 +14,17 @@ export function Savenotice(data) {
 }
 
 // 查询公告
-export function Listnotice() {
+export function Listnotice(data) {
     return request({
         method: "get",
-        url: "/notice/list",
+        url: "/admin/notice/list",
         headers: {
             token: getToken(),
         },
+        params:{
+            page:data.page,
+            pageSize:data.pageSize
+        }
     });
 }
 
@@ -28,7 +32,7 @@ export function Listnotice() {
 export function ListnoticeID(id) {
     return request({
         method: "get",
-        url: "/notice/list",
+        url: "/customer/notice/list",
         headers: {
             token: getToken(),
         },
