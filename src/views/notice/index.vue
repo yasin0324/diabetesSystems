@@ -35,7 +35,7 @@
             </span>
         </div>
         <div class="Banner">
-            <el-table :data="noticeValue" height="577" style="width: 100%">
+            <el-table :data="noticeValue" height="545" style="width: 100%">
                 <el-table-column
                     label="发布管理员id"
                     fixed
@@ -45,7 +45,6 @@
                 <el-table-column label="标题" prop="title" />
                 <el-table-column
                     label="发布时间"
-
                     prop="createTime"
                 />
                 <el-table-column fixed="right" label="操作">
