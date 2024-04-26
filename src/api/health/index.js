@@ -282,4 +282,38 @@ export function getSportsType() {
         },
     });
 }
+// 通过用户运动申请
+export function passSport1(id) {
+    return request({
+        method: "post",
+        url: `/admin/sport/detail/pass1/${id}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 删除用户运动申请
+export function passSport0(id) {
+    return request({
+        method: "post",
+        url: `/admin/sport/detail/pass0/${id}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 查询所有待审核运动
+export function getPassSport(data) {
+    return request({
+        method: "get",
+        url: "/admin/sport/detail/waitPass",
+        headers: {
+            token: token,
+        },
+        params: {
+            page: data.page,
+            pageSize: data.pageSize,
+        },
+    });
+}
 // -----------------------------------------

@@ -15,6 +15,9 @@
                 circle
                 @click="refreshSearch"
             ></el-button>
+            <el-button class="passSport" @click="openPassSport">
+                自定义食物审核
+            </el-button>
             <el-button class="addSport" @click="openAddSport"
                 >新增运动</el-button
             >
@@ -152,6 +155,59 @@
                 >
             </el-form>
         </el-dialog>
+        <el-dialog
+            align-center
+            class="passSportDialog"
+            v-model="passVisible"
+            title="用户自定义运动审核"
+            width="1000"
+        >
+            <div class="mainContent" style="margin-bottom: 2vh">
+                <el-table :data="tableData2" stripe height="530">
+                    <el-table-column label="分类" prop="type"></el-table-column>
+                    <el-table-column label="图片">
+                        <template #default="scope">
+                            <img
+                                :src="scope.row.picture"
+                                style="width: 5vh; height: 5vh"
+                            />
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="运动" prop="name"></el-table-column>
+                    <el-table-column
+                        label="运动消耗(60分钟)/千卡"
+                        prop="name"
+                    ></el-table-column>
+                    <el-table-column label="管理" fixed="right" align="center">
+                        <template #default="scope">
+                            <el-button
+                                link
+                                size="small"
+                                type="primary"
+                                @click="passSports1(scope.row)"
+                                >通过</el-button
+                            >
+                            <el-button
+                                link
+                                size="small"
+                                type="danger"
+                                @click="passSports0(scope.row)"
+                                >拒绝</el-button
+                            >
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="mainFooter">
+                <el-pagination
+                    :page-size="passPageSize"
+                    @current-change="getPassSportList"
+                    :total="passTotal"
+                    v-model:current-page="passPage"
+                    layout="pre,pager,next"
+                ></el-pagination>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -163,6 +219,9 @@ import {
     updateSportsInfo,
     deleteSportsInfo,
     getSportsType,
+    getPassSport,
+    passSport0,
+    passSport1,
 } from "../../../api/health";
 import { getToken } from "../../../util/auth";
 
@@ -354,6 +413,52 @@ const filterHandler = (value) => {
             });
     });
 };
+// 打开运动审核
+const tableData2 = ref([]);
+const passVisible = ref(false);
+const passPage = ref(1);
+const passPageSize = ref(10);
+const passTotal = ref(0);
+const openPassSport = () => {
+    passVisible.value = true;
+    getPassSportList();
+};
+// 获得待审核食物列表
+const getPassSportList = () => {
+    let data = {
+        page: passPage.value,
+        pageSize: passPageSize.value,
+    };
+    getPassSport(data)
+        .then((res) => {
+            tableData2.value = res.data.sportDetails;
+            passTotal.value = res.data.total;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+// 审核通过
+const passSports1 = (item) => {
+    passSport1(item.id)
+        .then((res) => {
+            getPassSportList();
+            handleCurrentPage();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+// 审核不通过
+const passSports0 = (item) => {
+    passSport0(item.id)
+        .then((res) => {
+            getPassSportList();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
 
 // 获取所有运动数据
 onMounted(() => {
@@ -374,6 +479,10 @@ onMounted(() => {
         }
         .searchButton {
             margin-left: 1vh;
+        }
+        .passSport {
+            position: absolute;
+            right: 15vh;
         }
         .addSport {
             position: absolute;

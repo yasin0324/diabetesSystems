@@ -71,12 +71,14 @@ const toUser = () => {
     router.push("/home/userInfo");
 };
 // 跳转到管理员注册
-const toregister = () =>{
-    router.push("/home/register")
-}
+const toregister = () => {
+    router.push("/home/register");
+};
 
 onMounted(() => {
-    getUserInfo();
+    setTimeout(() => {
+        getUserInfo();
+    }, 500);
 });
 </script>
 

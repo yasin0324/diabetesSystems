@@ -580,11 +580,10 @@ const getPassFoodList = () => {
     };
     getPassFood(data)
         .then((res) => {
-            console.log(res);
             tableData2.value = res.data.foodDetails;
             passTotal.value = res.data.total;
         })
-        .then((err) => {
+        .catch((err) => {
             console.log(err);
         });
 };

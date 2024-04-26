@@ -153,6 +153,7 @@ const showChart2 = (data) => {
         title: {
             text: "用户食物选择偏好",
             left: "center",
+            top: "10",
         },
         tooltip: {
             trigger: "item",
@@ -162,7 +163,7 @@ const showChart2 = (data) => {
             type: "scroll",
             orient: "vertical",
             right: 0,
-            top: 20,
+            top: 30,
             data: foodTypes,
         },
         series: [
@@ -170,6 +171,7 @@ const showChart2 = (data) => {
                 name: "食物类别",
                 type: "pie",
                 radius: "60%",
+                center: ["50%", "60%"],
                 data: formattedData,
                 emphasis: {
                     itemStyle: {
@@ -189,8 +191,6 @@ const showChart3 = (value) => {
     const foodData = value.map(function (item) {
         return [item.gl, item.gi];
     });
-    console.log(value);
-    console.log(foodData);
 
     const chartDom = document.getElementById("chart3");
     chartDom?.removeAttribute("_echarts_instance_");
