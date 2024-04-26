@@ -39,17 +39,16 @@
                 <el-table-column
                     label="发布管理员id"
                     fixed
-                    width="120"
                     prop="adminId"
                 />
-                <el-table-column label="公告id" width="100" prop="id" />
-                <el-table-column label="标题" width="200" prop="title" />
+                <el-table-column label="公告id"  prop="id" />
+                <el-table-column label="标题" prop="title" />
                 <el-table-column
                     label="发布时间"
-                    width="200"
+
                     prop="createTime"
                 />
-                <el-table-column :fixed="right" label="操作">
+                <el-table-column :fixed="right" width="400" label="操作">
                     <template #default="scope">
                         <el-button
                             type="success"
@@ -240,52 +239,37 @@ function searchnotice() {
     ListnoticeID(searchnoticeID.value)
         .then((res) => {
             noticeValue.value = res.data;
+            
         })
         .catch((error) => {
             console.log(error);
         });
 }
-
 // 查询公告
 const noticeValue = ref([]);
+let page = ref(1);
+let pageSize = ref(10);
+let total = ref(10);
 function ListnoticeValue() {
-    Listnotice()
+    const data = {
+        page: page.value,
+        pageSize: pageSize.value,
+    };
+    Listnotice(data)
         .then((res) => {
-            // console.log(res)
-            noticeValue.value = res.data;
+            console.log(res)
+            noticeValue.value = res.data.noticeList;
+            total.value = res.data.total;
         })
         .then((error) => {
             console.log(error);
         });
 }
-// let page = ref(1);
-// let pageSize = ref(11);
-// let total = ref(10);
-// // 分页查询
-// const handliesearchPage = (newPage) => {
-//     page.value = newPage;
-//     const data = {
-//         page: page.value,
-//         pageSize: pageSize.value,
-//     };
-//     SavenoticeValue(data);
-// };
-// function SavenoticeValue() {
-//     const data = {
-//         page: page.value,
-//         pageSize: pageSize.value,
-//     };
-//     Savenotice(data)
-//         .then((res) => {
-//             console.log(res);
-//             feed_backValue.value = res.data.feedBackVOList;
-//             total.value = res.data.total;
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// }
-
+// 分页查询
+const handliesearchPage = (newPage) => {
+    page.value = newPage;
+    ListnoticeValue();
+};
 // 发布公告
 const SavenoticeWord = ref({
     title: "",
@@ -305,6 +289,8 @@ function SavenoticeValue(data) {
             console.log(error);
         });
 }
+
+
 // 表单校验规则
 const noticerules = ref({
     title: [{ required: true, message: "请输入标题", trigger: "blur" }],
