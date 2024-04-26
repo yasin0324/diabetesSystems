@@ -1,32 +1,38 @@
 <template>
     <div class="main">
-        <el-table :data="feed_backValue" class="table" :fit="true" height="577">
-            <el-table-column label="反馈用户id" prop="userId" />
-            <el-table-column label="反馈类型" prop="type" />
-            <el-table-column label="手机号" prop="mobile" />
-            <el-table-column label="反馈时间" prop="createTime" />
-            <el-table-column fixed="right" label="操作">
-                <template #default="scope">
-                    <el-button
-                        type="success"
-                        color="#736ffe"
-                        round
-                        plain
-                        @click="handleLook(scope.$index, scope.row)"
-                    >
-                        查看详细信息
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <el-pagination
-            class="fenye"
-            background
-            layout="prev, pager, next"
-            :total="total"
-            :current-page="page"
-            @current-change="handliesearchPage"
-        />
+        <div class="Banner">
+            <el-table :data="feed_backValue" class="table" height="545" :fit="true">
+                <el-table-column label="反馈用户id" prop="userId" />
+                <el-table-column label="反馈类型" prop="type" />
+                <el-table-column label="手机号" prop="mobile" />
+                <el-table-column label="反馈时间" prop="createTime" />
+                <el-table-column fixed="right" label="操作">
+                    <template #default="scope">
+                        <el-button
+                            type="success"
+                            color="#736ffe"
+                            round
+                            plain
+                            @click="handleLook(scope.$index, scope.row)"
+                        >
+                            查看详细信息
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="footer">
+            <el-pagination
+                class="fenye"
+                background
+                layout="prev, pager, next"
+                :total="total"
+                :current-page="page"
+                @current-change="handliesearchPage"
+            />
+        </div>
+        
+        
 
         <!-- 查看详细信息 -->
         <el-dialog v-model="dialogAllFeedValue" width="1000">
@@ -147,6 +153,7 @@ function SaveFeed_backValue() {
             console.log(error);
         });
 }
+
 const dialogAllFeedValue = ref(false);
 let dialogData = ref("");
 function handleLook(index, data) {
@@ -157,22 +164,24 @@ function handleLook(index, data) {
 
 <style lang="less" scoped>
 .main {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    text-align: center;
     display: flex;
     align-items: center;
     flex-direction: column;
-    position: relative;
-    .table {
+    .Banner{
         width: 100%;
+        height: 75vh;
+        overflow: hidden;
+        overflow: scroll;
+
     }
-    .fenye {
-        // height: 10vh;
-        position: absolute;
-        bottom: 0vh;
+    .footer{
+        width: 100%;
+        height:10%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
+    
     :deep(.el-pagination) {
         li.is-active {
             background-color: #736ffe;
