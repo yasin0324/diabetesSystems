@@ -227,6 +227,7 @@ const submitnoticeForm = async () => {
         if (valid) {
             SavenoticeValue(SavenoticeWord.value);
             dialognotice.value = false;
+
         } else {
             return false;
         }
@@ -283,6 +284,8 @@ function SavenoticeValue(data) {
                 message: "发布成功",
                 type: "success",
             });
+            SavenoticeWord.value.title = '';
+            SavenoticeWord.value.word = '';
             ListnoticeValue();
         })
         .then((error) => {
@@ -316,6 +319,7 @@ function delnoticeValue(id) {
 <style lang="less" scoped>
 .button {
     width: 100%;
+    height: 5vh;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -333,15 +337,16 @@ function delnoticeValue(id) {
 
 .Banner {
     width: 100%;
-    height: 72vh;
+    height: 70vh;
 }
 
 .footer {
     width: 100%;
-    height: 10%;
+    height: 5vh;
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-top: 1vh;
     :deep(.el-pagination) {
         li.is-active {
             background-color: #736ffe;
