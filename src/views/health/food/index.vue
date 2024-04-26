@@ -13,6 +13,9 @@
                 circle
                 @click="refreshSearch"
             ></el-button>
+            <el-button class="passFood" @click="openPassFood">
+                自定义食物审核
+            </el-button>
             <el-button class="addFood" @click="openAddFood">新增食物</el-button>
         </div>
         <div class="mainContent">
@@ -221,6 +224,99 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
+        <el-dialog
+            align-center
+            class="passFoodDialog"
+            v-model="passVisible"
+            title="用户自定义食物审核"
+            width="1000"
+        >
+            <div class="mainContent" style="margin-bottom: 2vh">
+                <el-table :data="tableData2" stripe height="530">
+                    <el-table-column
+                        label="分类"
+                        prop="type"
+                        fixed="left"
+                    ></el-table-column
+                    ><el-table-column fixed="left" label="图片">
+                        <template #default="scope">
+                            <img
+                                :src="scope.row.picture"
+                                style="width: 5vh; height: 5vh"
+                            />
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="名称"
+                        prop="name"
+                        width="120"
+                        fixed="left"
+                    ></el-table-column>
+                    <el-table-column
+                        label="热量 kcal/100g"
+                        prop="heat"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="含糖量 g/100g"
+                        prop="glucose"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="升糖指数(GI)"
+                        prop="gi"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="升糖负荷(GL)"
+                        prop="gl"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="碳水化合物 g/100g"
+                        prop="carbohydrate"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="蛋白质 g/100g"
+                        prop="protein"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        label="脂肪 g/100g"
+                        prop="fat"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column label="管理" fixed="right" width="110">
+                        <template #default="scope">
+                            <el-button
+                                link
+                                size="small"
+                                type="primary"
+                                @click="passFood1(scope.row)"
+                                >通过</el-button
+                            >
+                            <el-button
+                                link
+                                size="small"
+                                type="danger"
+                                @click="passFood2(scope.row)"
+                                >拒绝</el-button
+                            >
+                        </template>
+                    </el-table-column></el-table
+                >
+            </div>
+            <div class="mainFooter">
+                <el-pagination
+                    :page-size="passPageSize"
+                    @current-change="getPassFoodList"
+                    :total="passTotal"
+                    v-model:current-page="passPage"
+                    layout="pre,pager,next"
+                ></el-pagination>
+            </div>
+        </el-dialog>
     </div>
     <el-dialog
         style="display: flex; justify-content: center"
@@ -238,6 +334,9 @@ import {
     getFoodType,
     getFoodInfo,
     updateFoodInfo,
+    pass1,
+    pass0,
+    getPassFood,
 } from "../../../api/health/index";
 import { getToken } from "../../../util/auth";
 
@@ -463,6 +562,53 @@ const handlePictureCardPreview = async (file) => {
     dialogImageUrl.value = file.url;
     pictureDialogVisible.value = true;
 };
+// 打开审核食物对话框
+const tableData2 = ref([]);
+const passVisible = ref(false);
+const passPage = ref(1);
+const passPageSize = ref(10);
+const passTotal = ref(0);
+const openPassFood = () => {
+    passVisible.value = true;
+    getPassFoodList();
+};
+// 获得待审核食物列表
+const getPassFoodList = () => {
+    let data = {
+        page: passPage.value,
+        pageSize: passPageSize.value,
+    };
+    getPassFood(data)
+        .then((res) => {
+            console.log(res);
+            tableData2.value = res.data.foodDetails;
+            passTotal.value = res.data.total;
+        })
+        .then((err) => {
+            console.log(err);
+        });
+};
+// 通过用户申请
+const passFood1 = (item) => {
+    pass1(item.id)
+        .then((res) => {
+            getPassFoodList();
+            handleCurrentPage();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+// 拒绝用户申请
+const passFood2 = (item) => {
+    pass0(item.id)
+        .then((res) => {
+            getPassFoodList();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
 
 // 获取所有食物数据
 onMounted(() => {
@@ -483,6 +629,10 @@ onMounted(() => {
         }
         .searchButton {
             margin-left: 1vh;
+        }
+        .passFood {
+            position: absolute;
+            right: 15vh;
         }
         .addFood {
             position: absolute;

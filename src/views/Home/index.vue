@@ -43,4 +43,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
+:deep(.el-dialog) {
+    --el-dialog-border-radius: 3vh;
+}
 </style>

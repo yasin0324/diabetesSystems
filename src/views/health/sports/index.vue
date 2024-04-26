@@ -33,7 +33,7 @@
                     :filters="sportType"
                     :filter-multiple="false"
                 ></el-table-column>
-                <el-table-column>
+                <el-table-column label="图片">
                     <template #default="scope">
                         <img
                             :src="scope.row.picture"

@@ -99,6 +99,40 @@ export function getFoodType() {
         },
     });
 }
+// 通过用户食物申请
+export function pass1(id) {
+    return request({
+        method: "post",
+        url: `/admin/list/food/pass1/${id}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 拒绝用户食物申请
+export function pass0(id) {
+    return request({
+        method: "post",
+        url: `/admin/list/food/pass0/${id}`,
+        headers: {
+            token: token,
+        },
+    });
+}
+// 查询所有待审核食物
+export function getPassFood(data) {
+    return request({
+        method: "get",
+        url: "/admin/food/waitPass",
+        headers: {
+            token: token,
+        },
+        params: {
+            page: data.page,
+            pageSize: data.pageSize,
+        },
+    });
+}
 // -----------------------------------------
 // 文章管理---------------------------------
 // 分页查询文章

@@ -57,6 +57,7 @@
                             "
                             style="
                                 width: 7vh;
+                                height: 7vh;
                                 border-radius: 50%;
                                 border: 1px solid black;
                             "
@@ -98,13 +99,14 @@ import {
 
 const admin = ref({});
 const websocket = ref(null);
-const userId = ref(6);
+const userId = ref(9);
 const mess = ref("");
 
 const getAdminInfo = () => {
     getInfo()
         .then((res) => {
             admin.value = res.data;
+            userId.value = res.data.userId;
         })
         .catch((err) => {
             console.log(err);
@@ -129,19 +131,21 @@ websocket.value.onopen = function () {
 
 websocket.value.onmessage = function (event) {
     console.log(event.data);
-    getChatUsers()
-        .then((res) => {
-            chaters.value = res.data;
-            chaters.value.map((item) => {
-                if (item.sysUser.id === received.value.userId) {
-                    item.notReadNum = 0;
-                }
+    if (event.data !== "webSocket连接成功！") {
+        getChatUsers()
+            .then((res) => {
+                chaters.value = res.data;
+                chaters.value.map((item) => {
+                    if (item.sysUser.id === received.value.userId) {
+                        item.notReadNum = 0;
+                    }
+                });
+            })
+            .catch((err) => {
+                console.log(err);
             });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    getChatMsg(received.value.userId);
+        getChatMsg(received.value.userId);
+    }
 };
 
 websocket.value.onclose = function () {
@@ -156,10 +160,11 @@ window.onbeforeunload = function () {
 const send = () => {
     let data = {
         msg: mess.value,
-        receiveId: 3,
+        receiveId: received.value.userId,
     };
     websocket.value.send(JSON.stringify(data));
     mess.value = "";
+    getChatMsg(received.value.userId);
 };
 
 // 关闭连接
@@ -173,7 +178,7 @@ const getChaters = () => {
     getChatUsers()
         .then((res) => {
             chaters.value = res.data;
-            choseChat(chaters.value[0]);
+            choseChat(res.data[0]);
         })
         .catch((err) => {
             console.log(err);

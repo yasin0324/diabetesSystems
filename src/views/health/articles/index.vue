@@ -47,7 +47,7 @@
                     :filter-multiple="false"
                     column-key="type"
                 ></el-table-column>
-                <el-table-column fixed="left">
+                <el-table-column fixed="left" label="图片">
                     <template #default="scope">
                         <img
                             :src="scope.row.picture"
