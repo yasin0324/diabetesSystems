@@ -143,6 +143,7 @@
                         :file-list="sportFileLists"
                         :on-success="(file) => handleSuccess(file)"
                         :headers="headers"
+                        :on-preview="handlePictureCardPreview"
                     >
                         <el-icon class="food-uploader-icon"><Plus /></el-icon>
                     </el-upload>
@@ -229,6 +230,12 @@
             </div>
         </el-dialog>
     </div>
+    <el-dialog
+        style="display: flex; justify-content: center"
+        v-model="pictureDialogVisible"
+    >
+        <img :src="dialogImageUrl" alt="" />
+    </el-dialog>
 </template>
 
 <script setup>
@@ -356,7 +363,7 @@ const addNewSport = () => {
     };
     addSportsInfo(data)
         .then((res) => {
-            ElMessage.success("新增成功")
+            ElMessage.success("新增成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -384,7 +391,7 @@ const editSport = () => {
     };
     updateSportsInfo(data)
         .then((res) => {
-            ElMessage.success("编辑成功")
+            ElMessage.success("编辑成功");
             console.log(res);
         })
         .catch((err) => {
@@ -488,6 +495,12 @@ const passSports0 = (item) => {
         .catch((err) => {
             console.log(err);
         });
+};
+const pictureDialogVisible = ref(false);
+const dialogImageUrl = ref("");
+const handlePictureCardPreview = async (file) => {
+    dialogImageUrl.value = file.url;
+    pictureDialogVisible.value = true;
 };
 
 // 获取所有运动数据

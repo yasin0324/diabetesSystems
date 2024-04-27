@@ -80,6 +80,12 @@
                     label="预览"
                     prop="preview"
                     width="200"
+                    :formatter="
+                        (row) =>
+                            row.preview.length > 23
+                                ? row.preview.substring(0, 23) + '...'
+                                : row.preview
+                    "
                 ></el-table-column>
                 <el-table-column
                     label="链接"
@@ -157,10 +163,14 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="文章分类" prop="type">
-                    <el-input
+                    <el-select
                         v-model="articlesInfo.type"
-                        placeholder="请输入文章类别"
-                    ></el-input>
+                        placeholder="请选择文章类别"
+                    >
+                        <el-option label="运动" value="运动"></el-option>
+                        <el-option label="饮食" value="饮食"></el-option>
+                        <el-option label="健康" value="健康"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="文章链接" prop="link">
                     <el-input
@@ -190,6 +200,7 @@
                         :file-list="articlesFileLists"
                         :on-success="(file) => handleSuccess(file)"
                         :headers="headers"
+                        :on-preview="handlePictureCardPreview"
                     >
                         <el-icon class="articles-uploader-icon"
                             ><Plus
@@ -225,6 +236,12 @@
             </el-form>
         </el-dialog>
     </div>
+    <el-dialog
+        style="display: flex; justify-content: center"
+        v-model="pictureDialogVisible"
+    >
+        <img :src="dialogImageUrl" alt="" />
+    </el-dialog>
 </template>
 
 <script setup>
@@ -399,7 +416,7 @@ const editArticle = () => {
 const deleteArticle = (article) => {
     deleteArticlesInfo(article.id)
         .then((res) => {
-            ElMessage.success("删除成功")
+            ElMessage.success("删除成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -446,6 +463,12 @@ const filterHandler = (value) => {
             });
     });
 };
+const pictureDialogVisible = ref(false);
+const dialogImageUrl = ref("");
+const handlePictureCardPreview = async (file) => {
+    dialogImageUrl.value = file.url;
+    pictureDialogVisible.value = true;
+};
 
 onMounted(() => {
     handleCurrentPage();
@@ -487,6 +510,11 @@ onMounted(() => {
 }
 :deep(.el-button) {
     border-radius: 2vh;
+}
+:deep(.el-select) {
+    .el-select__wrapper {
+        border-radius: 2vh;
+    }
 }
 .picture-item {
     height: 19vh;
