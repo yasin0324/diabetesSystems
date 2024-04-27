@@ -15,6 +15,29 @@ export function loginUserName(data) {
     });
 }
 
+// 用户手机号登录
+export function loginPhone(data) {
+    return request({
+        method: "post",
+        url: "/user/login/mobile",
+        headers: {
+            mobile: data.mobile,
+            smsCode: data.smsCode,
+        },
+    });
+}
+
+// 获取短信验证码
+export function getSmsCode(data) {
+    return request({
+        method: "get",
+        url: "/common/code/mobile",
+        params: {
+            mobile: data,
+        },
+    });
+}
+
 // 退出登录
 export function logout() {
     return request({

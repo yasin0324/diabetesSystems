@@ -7,7 +7,17 @@
             class="login-form"
         >
             <h3 class="title">控糖宝后台管理系统</h3>
-            <el-form-item prop="userName">
+            <el-form-item>
+                <el-radio-group v-model="loginType" class="choseType">
+                    <el-radio label="userName">用户名登录</el-radio>
+                    <el-radio label="mobile">手机登录</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item
+                prop="userName"
+                v-if="loginType === 'userName'"
+                class="form_item"
+            >
                 <el-input
                     v-model="loginForm.userName"
                     type="text"
@@ -20,7 +30,7 @@
                             ><UserFilled /></el-icon></template
                 ></el-input>
             </el-form-item>
-            <el-form-item prop="password">
+            <el-form-item prop="password" v-if="loginType === 'userName'">
                 <el-input
                     v-model="loginForm.password"
                     type="password"
@@ -33,6 +43,44 @@
                         ><el-icon><Lock /></el-icon>
                     </template>
                 </el-input>
+            </el-form-item>
+            <el-form-item prop="mobile" v-if="loginType === 'mobile'">
+                <el-input
+                    v-model="loginForm.mobile"
+                    type="text"
+                    size="large"
+                    placeholder="手机号"
+                >
+                    <template #prefix>
+                        <el-icon class="el-input__icon input-icon"
+                            ><PhoneFilled
+                        /></el-icon>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                prop="smsCode"
+                v-if="loginType === 'mobile'"
+                class="smsCode"
+            >
+                <el-input
+                    v-model="loginForm.smsCode"
+                    type="text"
+                    size="large"
+                    auto-complete="off"
+                    placeholder="验证码"
+                >
+                    <template #prefix>
+                        <el-icon><ChatLineRound /></el-icon>
+                    </template>
+                </el-input>
+                <el-button
+                    @click="getCode"
+                    plain
+                    color="#736ffe"
+                    :disabled="isCountingDown"
+                    >{{ isCountingDown ? `${countdown}s` : "获 取" }}</el-button
+                >
             </el-form-item>
             <el-form-item style="width: 100%">
                 <el-button
@@ -63,7 +111,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { loginUserName } from "../../api/login/index";
+import { loginUserName, getSmsCode, loginPhone } from "../../api/login/index";
 import { setToken } from "../../util/auth";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -75,11 +123,22 @@ const loginForm = ref({
     userName: "",
     password: "",
     rememberMe: false,
+    mobile: "",
+    smsCode: "",
 });
 
 const loginRules = {
     userName: [{ required: true, message: "请输入用户名", trigger: "blur" }],
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    mobile: [
+        { required: true, message: "请输入手机号", trigger: "blur" },
+        {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
+        },
+    ],
+    smsCode: [{ required: true, message: "请输入验证码", trigger: "blur" }],
 };
 
 const loading = ref(false);
@@ -102,23 +161,61 @@ const finishCheck = () => {
 };
 // 登录
 const loginByUserName = () => {
-    loginUserName(loginForm.value)
+    loginType.value === "userName"
+        ? loginUserName(loginForm.value)
+              .then((res) => {
+                  if (res.data.role === "管理员") {
+                      setToken(res.data.token);
+                      ElMessage.success("登录成功");
+                      setTimeout(() => {
+                          router.push("/home");
+                      }, 800);
+                  } else {
+                      ElMessage.error("权限不足，无法登录");
+                  }
+              })
+              .catch((err) => {
+                  console.log(err);
+              })
+        : loginPhone(loginForm.value).then((res) => {
+              if (res.data.role === "管理员") {
+                  setToken(res.data.token);
+                  ElMessage.success("登录成功");
+                  setTimeout(() => {
+                      router.push("/home");
+                  }, 800);
+              } else {
+                  ElMessage.error("权限不足，无法登录");
+              }
+          });
+};
+const loginType = ref("userName");
+const getCode = () => {
+    getSmsCode(loginForm.value.mobile)
         .then((res) => {
-            console.log(res.data);
-            if (res.data.role === "管理员") {
-                setToken(res.data.token);
-                ElMessage.success("登录成功");
-                setTimeout(() => {
-                    router.push("/home");
-                }, 800);
+            if (res.code === 200) {
+                ElMessage.success(res.msg);
+                isCountingDown.value = true;
+                const timer = setInterval(() => {
+                    if (countdown.value > 0) {
+                        countdown.value--;
+                    } else {
+                        isCountingDown.value = false;
+                        countdown.value = 60;
+                        clearInterval(timer);
+                    }
+                }, 1000);
             } else {
-                ElMessage.error("权限不足，无法登录");
+                ElMessage.error(res.msg);
             }
         })
         .catch((err) => {
             console.log(err);
         });
 };
+// 验证码倒计时
+const countdown = ref(60);
+const isCountingDown = ref(false);
 </script>
 
 <style lang="less" scoped>
@@ -152,6 +249,25 @@ const loginByUserName = () => {
             text-align: center;
             color: #707070;
         }
+        .choseType {
+            margin: 0 auto;
+        }
+        .smsCode {
+            :deep(.el-form-item__content) {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .el-input {
+                    width: 70%;
+                }
+                .el-button {
+                    width: 25%;
+                    height: 100%;
+                    border-radius: 1.5vh;
+                    margin-right: 0vh;
+                }
+            }
+        }
     }
 }
 :deep(.el-dialog) {
@@ -161,5 +277,12 @@ const loginByUserName = () => {
 }
 :deep(.el-dialog__header) {
     padding-bottom: 0;
+}
+:deep(.el-radio__input.is-checked + .el-radio__label) {
+    color: #736ffe !important;
+}
+:deep(.el-radio__input.is-checked .el-radio__inner) {
+    background: #736ffe !important;
+    border-color: #736ffe !important;
 }
 </style>
