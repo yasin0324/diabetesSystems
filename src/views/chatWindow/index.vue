@@ -247,6 +247,7 @@ const getChatMsgs = (id) => {
     getChats(id)
         .then((res) => {
             allChats.value = res.data.reverse();
+            console.log(id)
             res.data.map((item) => {
                 updatemsg(item.id);
             });
@@ -259,8 +260,8 @@ const getChatMsgs = (id) => {
 const getChatMsg = (id) => {
     getChats(id)
         .then((res) => {
-            console.log(res.data);
             allChats.value = res.data.reverse();
+            console.log(id)
             res.data.map((item) => {
                 updatemsg(item.id);
             });

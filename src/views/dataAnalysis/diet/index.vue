@@ -157,13 +157,13 @@ const showChart2 = (data) => {
             trigger: "item",
             formatter: "{a} <br/>{b} : {c} 次 ({d}%)",
         },
-        legend: {
-            type: "scroll",
-            orient: "vertical",
-            right: 0,
-            top: 30,
-            data: foodTypes,
-        },
+        // legend: {
+        //     type: "scroll",
+        //     orient: "vertical",
+        //     right: 0,
+        //     top: 30,
+        //     data: foodTypes,
+        // },
         series: [
             {
                 name: "食物类别",

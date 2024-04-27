@@ -300,6 +300,7 @@ const searchSport = () => {
 // 重置搜索
 const refreshSearch = () => {
     searchValue.value = "";
+    type1.value = "";
     page.value = 1;
     handleCurrentPage();
 };
