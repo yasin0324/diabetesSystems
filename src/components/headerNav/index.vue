@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="main">
-            <div class="logo"></div>
+            <div class="logo">
+                <img src="../../common/image/2.png" alt="" />
+            </div>
             <div class="userInfo">
                 <el-dropdown>
                     <el-avatar
@@ -88,10 +90,12 @@ onMounted(() => {
     align-items: center;
     .logo {
         margin-left: 3vh;
-        background-image: url("../../common/image/logo.png");
         height: 10vh;
         width: 20vh;
-        background-size: cover;
+        img {
+            width: 25vh;
+            height: 10vh;
+        }
     }
     .userInfo {
         position: absolute;

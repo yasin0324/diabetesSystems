@@ -19,7 +19,11 @@
                 class="searchInput"
                 v-model="searchAuthorValue"
             ></el-input>
-            <el-button class="searchButton" @click="searchArticles"
+            <el-button
+                class="searchButton"
+                @click="searchArticles"
+                plain
+                color="#736ffe"
                 >搜索</el-button
             >
             <el-button
@@ -27,8 +31,14 @@
                 icon="Refresh"
                 circle
                 @click="refreshSearch"
+                plain
+                color="#736ffe"
             ></el-button>
-            <el-button class="addArticles" @click="openAddArticles"
+            <el-button
+                class="addArticles"
+                @click="openAddArticles"
+                plain
+                color="#736ffe"
                 >新增文章</el-button
             >
         </div>
@@ -95,12 +105,16 @@
                             @click="openUpdateArticle(scope.row)"
                             >编辑</el-button
                         >
-                        <el-button
-                            link
-                            size="small"
-                            type="danger"
-                            @click="deleteArticle(scope.row)"
-                            >删除</el-button
+                        <el-popconfirm
+                            title="确定删除吗？"
+                            @confirm="deleteArticle(scope.row)"
+                            confirm-button-text="确认"
+                            cancel-button-text="取消"
+                            ><template #reference>
+                                <el-button link size="small" type="danger"
+                                    >删除</el-button
+                                ></template
+                            ></el-popconfirm
                         >
                     </template>
                 </el-table-column>
@@ -223,6 +237,7 @@ import {
     getArticlesType,
 } from "../../../api/health";
 import { getToken } from "../../../util/auth";
+import { ElMessage } from "element-plus";
 
 const token = getToken();
 const headers = {
@@ -263,8 +278,10 @@ const articlesRules = {
     picture: [{ required: true, message: "请上传文章图片", trigger: "blur" }],
 };
 // 切换分页
+const type1 = ref("");
 const handleCurrentPage = () => {
     let data = {
+        type: type1.value,
         title: searchTitleValue.value,
         author: searchAuthorValue.value,
         page: page.value,
@@ -341,6 +358,7 @@ const addNewArticle = () => {
     };
     addArticlesInfo(data)
         .then((res) => {
+            ElMessage.success("新增成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -370,6 +388,7 @@ const editArticle = () => {
     };
     updateArticlesInfo(data)
         .then((res) => {
+            ElMessage.success("编辑成功");
             console.log(res);
         })
         .catch((err) => {
@@ -380,6 +399,7 @@ const editArticle = () => {
 const deleteArticle = (article) => {
     deleteArticlesInfo(article.id)
         .then((res) => {
+            ElMessage.success("删除成功")
             handleCurrentPage();
         })
         .catch((err) => {
@@ -405,9 +425,11 @@ const filterHandler = (value) => {
     datalength.value = 0;
     let types = value["type"];
     if (types.length === 0) {
+        type1.value = "";
         handleCurrentPage();
     }
     types.forEach((type) => {
+        type1.value = type;
         let data = {
             type: type,
             page: page.value,
@@ -476,5 +498,16 @@ onMounted(() => {
 :deep(.el-radio__input.is-checked .el-radio__inner) {
     background: #736ffe !important;
     border-color: #736ffe !important;
+}
+:deep(.el-pagination) {
+    li.is-active {
+        background-color: #736ffe;
+        // background-color: #84d21e;
+        color: var(--el-color-white);
+    }
+    li:hover {
+        background-color: #736ffe;
+        color: var(--el-color-white);
+    }
 }
 </style>

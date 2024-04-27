@@ -21,7 +21,6 @@ import * as echarts from "echarts";
 const getAllData = () => {
     getChartData21()
         .then((res) => {
-            console.log(res.data);
             showChart2(res.data);
         })
         .then((err) => {
@@ -29,7 +28,6 @@ const getAllData = () => {
         });
     getChartData22()
         .then((res) => {
-            console.log(res.data);
             showChart1(res.data);
         })
         .then((err) => {
@@ -189,7 +187,7 @@ const showChart2 = (data) => {
 // 食物营养散点图
 const showChart3 = (value) => {
     const foodData = value.map(function (item) {
-        return [item.gl, item.gi];
+        return { name: item.name, value: [item.gl, item.gi] };
     });
 
     const chartDom = document.getElementById("chart3");
@@ -200,9 +198,15 @@ const showChart3 = (value) => {
         title: {
             text: "食物营养散点图",
             left: "center",
-        },
+        },                                
         tooltip: {
             trigger: "item",
+            formatter: function (params) {
+                const data = params.data || [];
+                const xName = option.xAxis.name;
+                const yName = option.yAxis.name;
+                return `${data.name}<br>${xName}: ${data.value[0]}<br>${yName}: ${data.value[1]}`;
+            },
         },
         xAxis: {
             name: "升糖负荷(GL)",

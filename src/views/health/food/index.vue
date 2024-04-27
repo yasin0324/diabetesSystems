@@ -6,17 +6,36 @@
                 class="searchInput"
                 v-model="searchValue"
             ></el-input>
-            <el-button class="searchButton" @click="searchFood">搜索</el-button>
+            <el-button
+                class="searchButton"
+                plain
+                color="#736ffe"
+                @click="searchFood"
+                >搜索</el-button
+            >
             <el-button
                 class="resetSearch"
                 icon="Refresh"
+                plain
+                color="#736ffe"
                 circle
                 @click="refreshSearch"
             ></el-button>
-            <el-button class="passFood" @click="openPassFood">
+            <el-button
+                class="passFood"
+                @click="openPassFood"
+                plain
+                color="#736ffe"
+            >
                 自定义食物审核
             </el-button>
-            <el-button class="addFood" @click="openAddFood">新增食物</el-button>
+            <el-button
+                class="addFood"
+                @click="openAddFood"
+                plain
+                color="#736ffe"
+                >新增食物</el-button
+            >
         </div>
         <div class="mainContent">
             <el-table
@@ -91,13 +110,18 @@
                             @click="openUpdateFood(scope.row)"
                             >编辑</el-button
                         >
-                        <el-button
-                            link
-                            size="small"
-                            type="danger"
-                            @click="deleteFood(scope.row)"
-                            >删除</el-button
+                        <el-popconfirm
+                            title="确定删除吗？"
+                            @confirm="deleteFood(scope.row)"
+                            confirm-button-text="确认"
+                            cancel-button-text="取消"
                         >
+                            <template #reference>
+                                <el-button link size="small" type="danger"
+                                    >删除</el-button
+                                ></template
+                            >
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -339,6 +363,7 @@ import {
     getPassFood,
 } from "../../../api/health/index";
 import { getToken } from "../../../util/auth";
+import { ElMessage } from "element-plus";
 
 const token = getToken();
 const headers = {
@@ -370,6 +395,7 @@ const foodInfo = ref({
 const handleCurrentPage = () => {
     let data = {
         name: searchValue.value,
+        type: type1.value,
         page: page.value,
         pageSize: pageSize.value,
     };
@@ -468,6 +494,7 @@ const addNewFood = () => {
     };
     addFoodInfo(data)
         .then((res) => {
+            ElMessage.success("新增成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -503,6 +530,7 @@ const editFood = () => {
     };
     updateFoodInfo(data)
         .then((res) => {
+            ElMessage.success("编辑成功");
             console.log(res);
         })
         .catch((err) => {
@@ -513,6 +541,7 @@ const editFood = () => {
 const deleteFood = (food) => {
     deleteFoodInfo(food.id)
         .then((res) => {
+            ElMessage.success("删除成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -533,14 +562,17 @@ const getAllFoodType = () => {
         });
 };
 // 根据食物类别进行筛选
+const type1 = ref("");
 const filterHandler = (value) => {
     tableData.value = [];
     datalength.value = 0;
     let types = value["type"];
     if (types.length === 0) {
+        type1.value = "";
         handleCurrentPage();
     }
     types.forEach((type) => {
+        type1.value = type;
         let data = {
             type: type,
             page: page.value,
@@ -593,6 +625,7 @@ const passFood1 = (item) => {
         .then((res) => {
             getPassFoodList();
             handleCurrentPage();
+            ElMessage.success("通过成功");
         })
         .catch((err) => {
             console.log(err);
@@ -603,6 +636,7 @@ const passFood2 = (item) => {
     pass0(item.id)
         .then((res) => {
             getPassFoodList();
+            ElMessage.error("拒绝成功");
         })
         .catch((err) => {
             console.log(err);
@@ -651,6 +685,17 @@ onMounted(() => {
 }
 :deep(.el-button) {
     border-radius: 2vh;
+}
+:deep(.el-pagination) {
+    li.is-active {
+        background-color: #736ffe;
+        // background-color: #84d21e;
+        color: var(--el-color-white);
+    }
+    li:hover {
+        background-color: #736ffe;
+        color: var(--el-color-white);
+    }
 }
 .picture-item {
     height: 19vh;

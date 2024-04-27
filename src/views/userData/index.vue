@@ -1,7 +1,11 @@
 <template>
     <div class="main">
         <div class="mainContent">
-            <div class="userCard" v-for="(item,index) in userLists" :key="index">
+            <div
+                class="userCard"
+                v-for="(item, index) in userLists"
+                :key="index"
+            >
                 <div class="userNickName">{{ item.nickName }}</div>
                 <div class="userInfo1">
                     <div class="userAvatar">
@@ -41,6 +45,8 @@
                         <el-button
                             v-if="item.status === 1"
                             round
+                            plain
+                            color="#736ffe"
                             @click="setDisabled(item)"
                             >禁 用 账 号</el-button
                         >
@@ -53,7 +59,11 @@
                         >
                     </div>
                     <div class="moreInfo">
-                        <el-button round @click="checkInfo(item.userId)"
+                        <el-button
+                            round
+                            @click="checkInfo(item.userId)"
+                            plain
+                            color="#736ffe"
                             >查 看 详 细</el-button
                         >
                     </div>
@@ -280,6 +290,7 @@ onMounted(() => {
                     bottom: 1vh;
                     .disabled {
                         background-color: grey;
+                        color: #fff;
                     }
                 }
                 .moreInfo {
@@ -299,10 +310,21 @@ onMounted(() => {
         border-radius: 3ch;
     }
     .el-button {
-        background-color: #aeaed1;
-        color: #fff;
+        // background-color: #aeaed1;
+        // color: #fff;
         font-weight: bold;
         width: 15vh;
+    }
+}
+:deep(.el-pagination) {
+    li.is-active {
+        background-color: #736ffe;
+        // background-color: #84d21e;
+        color: var(--el-color-white);
+    }
+    li:hover {
+        background-color: #736ffe;
+        color: var(--el-color-white);
     }
 }
 </style>

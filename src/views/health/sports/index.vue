@@ -6,7 +6,11 @@
                 class="searchInput"
                 v-model="searchValue"
             ></el-input>
-            <el-button class="searchButton" @click="searchSport"
+            <el-button
+                class="searchButton"
+                @click="searchSport"
+                plain
+                color="#736ffe"
                 >搜索</el-button
             >
             <el-button
@@ -14,11 +18,22 @@
                 icon="Refresh"
                 circle
                 @click="refreshSearch"
+                plain
+                color="#736ffe"
             ></el-button>
-            <el-button class="passSport" @click="openPassSport">
-                自定义食物审核
+            <el-button
+                class="passSport"
+                @click="openPassSport"
+                plain
+                color="#736ffe"
+            >
+                自定义运动审核
             </el-button>
-            <el-button class="addSport" @click="openAddSport"
+            <el-button
+                class="addSport"
+                @click="openAddSport"
+                plain
+                color="#736ffe"
                 >新增运动</el-button
             >
         </div>
@@ -58,13 +73,18 @@
                             @click="openUpdateSport(scope.row)"
                             >编辑</el-button
                         >
-                        <el-button
-                            link
-                            size="small"
-                            type="danger"
-                            @click="deleteSport(scope.row)"
-                            >删除</el-button
+                        <el-popconfirm
+                            title="确定删除吗？"
+                            @confirm="deleteSport(scope.row)"
+                            confirm-button-text="确认"
+                            cancel-button-text="取消"
                         >
+                            <template #reference>
+                                <el-button link size="small" type="danger"
+                                    >删除</el-button
+                                ></template
+                            >
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -224,6 +244,7 @@ import {
     passSport1,
 } from "../../../api/health";
 import { getToken } from "../../../util/auth";
+import { ElMessage } from "element-plus";
 
 const token = getToken();
 const headers = {
@@ -246,8 +267,10 @@ const sportInfo = ref({
 });
 
 // 切换分页
+const type1 = ref("");
 const handleCurrentPage = () => {
     let data = {
+        type: type1.value,
         name: searchValue.value,
         page: page.value,
         pageSize: pageSize.value,
@@ -333,6 +356,7 @@ const addNewSport = () => {
     };
     addSportsInfo(data)
         .then((res) => {
+            ElMessage.success("新增成功")
             handleCurrentPage();
         })
         .catch((err) => {
@@ -360,6 +384,7 @@ const editSport = () => {
     };
     updateSportsInfo(data)
         .then((res) => {
+            ElMessage.success("编辑成功")
             console.log(res);
         })
         .catch((err) => {
@@ -370,6 +395,7 @@ const editSport = () => {
 const deleteSport = (sport) => {
     deleteSportsInfo(sport.id)
         .then((res) => {
+            ElMessage.success("删除成功");
             handleCurrentPage();
         })
         .catch((err) => {
@@ -395,9 +421,11 @@ const filterHandler = (value) => {
     datalength.value = 0;
     let types = value["type"];
     if (types.length === 0) {
+        type1.value = "";
         handleCurrentPage();
     }
     types.forEach((type) => {
+        type1.value = type;
         let data = {
             type: type,
             page: page.value,
@@ -444,6 +472,7 @@ const passSports1 = (item) => {
         .then((res) => {
             getPassSportList();
             handleCurrentPage();
+            ElMessage.success("通过成功");
         })
         .catch((err) => {
             console.log(err);
@@ -454,6 +483,7 @@ const passSports0 = (item) => {
     passSport0(item.id)
         .then((res) => {
             getPassSportList();
+            ElMessage.error("拒绝成功");
         })
         .catch((err) => {
             console.log(err);
@@ -502,6 +532,17 @@ onMounted(() => {
 }
 :deep(.el-button) {
     border-radius: 2vh;
+}
+:deep(.el-pagination) {
+    li.is-active {
+        background-color: #736ffe;
+        // background-color: #84d21e;
+        color: var(--el-color-white);
+    }
+    li:hover {
+        background-color: #736ffe;
+        color: var(--el-color-white);
+    }
 }
 .picture-item {
     height: 19vh;
