@@ -388,6 +388,12 @@ const openUpdateArticle = (article) => {
     dialogTitle.value = "编辑文章";
     articlesInfo.value = article;
     imgUrl.value = article.picture;
+    articlesFileLists.value = [
+        {
+            name: "article",
+            url: article.picture,
+        },
+    ];
     submitType.value = "edit";
     editedId.value = article.id;
     dialogVisible.value = true;

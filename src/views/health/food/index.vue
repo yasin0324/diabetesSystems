@@ -509,6 +509,12 @@ const openUpdateFood = (food) => {
     foodInfo.value.GI = food.gi;
     foodInfo.value.GL = food.gl;
     imgUrl.value = food.picture;
+    foodFileLists.value = [
+        {
+            name: "food",
+            url: food.picture,
+        },
+    ];
     submitType.value = "edit";
     editedId.value = food.id;
     dialogVisible.value = true;
