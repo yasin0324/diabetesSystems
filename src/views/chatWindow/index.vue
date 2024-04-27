@@ -40,7 +40,29 @@
             </div>
         </div>
         <div class="chatWindow">
-            <div class="chatHeader">{{ received.nickName }}</div>
+            <div class="chatHeader">
+                <div
+                    class="status"
+                    :style="
+                        serviceStatus
+                            ? {
+                                  width: '2vh',
+                                  height: '2vh',
+                                  borderRadius: '50%',
+                                  backgroundColor: '#a0a5a8',
+                                  marginRight: '1vh',
+                              }
+                            : {
+                                  width: '2vh',
+                                  height: '2vh',
+                                  borderRadius: '50%',
+                                  backgroundColor: '#00ff00',
+                                  marginRight: '1vh',
+                              }
+                    "
+                ></div>
+                <div class="content">{{ received.nickName }}</div>
+            </div>
             <div class="chatMain" ref="chatContent">
                 <div
                     v-for="item in allChats"
@@ -76,10 +98,16 @@
                     type="textarea"
                     resize="none"
                     :autosize="{ minRows: 6, maxRows: 6 }"
+                    :disabled="serviceStatus"
                 >
                 </el-input>
                 <div class="footer">
-                    <el-button type="primary" @click="send">发送</el-button>
+                    <el-button
+                        type="primary"
+                        @click="send"
+                        :disabled="serviceStatus"
+                        >发送</el-button
+                    >
                 </div>
             </div>
         </div>
@@ -144,6 +172,10 @@ websocket.value.onmessage = function (event) {
             .catch((err) => {
                 console.log(err);
             });
+        serviceStatus.value = false;
+        if (event.data === "发送失败，接收者已下线！") {
+            serviceStatus.value = true;
+        }
         getChatMsg(received.value.userId);
     }
 };
@@ -155,6 +187,8 @@ websocket.value.onclose = function () {
 window.onbeforeunload = function () {
     websocket.value.close();
 };
+
+const serviceStatus = ref(false);
 
 // 发送消息
 const send = () => {
@@ -187,8 +221,16 @@ const getChaters = () => {
 // 选择对话对象
 const selectID = ref(0);
 const choseChat = (chater) => {
+    serviceStatus.value = false;
     selectID.value = chater.sysUser.id;
     chater.notReadNum = 0;
+    let data = {
+        msg: "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTQwNDkzNzAsInVzZXJJZCI6IjkifQ.wDyeTdDkki-dDG_NsqZ126e4X8FVNJ3axCDLrFGcTe0123",
+        receiveId: chater.sysUser.id,
+    };
+    setTimeout(() => {
+        websocket.value.send(JSON.stringify(data));
+    }, 500);
     getChatMsgs(chater.sysUser.id);
 };
 // 聊天内容
